@@ -130,3 +130,4 @@ dmypy.json
 
 #Log my prog uses
 log.csv
+/backend/log.csv
