@@ -489,7 +489,6 @@ flatt
 flint
 flora
 flory
-floyd
 flynn
 foley
 fonda

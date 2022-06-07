@@ -3,7 +3,6 @@ Python wordle solver.
 This program auto-solves the wordle by always guessing the suggested guess
 Author : Andrew Ammentorp
 """
-# TODO test with vales and wears
 import sys
 
 from wordleSolverFunctions import *
@@ -45,25 +44,6 @@ if __name__ == '__main__':
     recomendedGuess = wordleSolver.calcSuggestedGuess()
     #print("Recomended starter word: " , recomendedGuess)
     
-    # we use the first 2 guesses for information gathering
-    # calc next best guess (highest freq score and not characters in inital guess)
-    # fun fact it's 'doing'!
-    secondGuess = wordleSolver.calcSecondGuess(recomendedGuess)
-    
-    
-    # use initial guess
-    guess = recomendedGuess
-    feedback = wordleSolver.calcFeedback(guess,correctWord)
-    wordleSolver.processFeedback(guess,feedback,correctWord)
-
-    # TODO edge case if just missing one letter and everything else green
-
-    # now use second guess    
-    guess = secondGuess
-    feedback = wordleSolver.calcFeedback(guess,correctWord)
-    wordleSolver.processFeedback(guess,feedback,correctWord)
-    
-    recomendedGuess = wordleSolver.calcSuggestedGuess()
 
     for guesses in range(1000):
 
@@ -74,7 +54,7 @@ if __name__ == '__main__':
         # calc the feedback
         feedback = wordleSolver.calcFeedback(guess,correctWord)   
         
-        wordleSolver.processFeedback(guess,feedback,correctWord)
+        wordleSolver.processFeedback(guess,feedback)
              
         recomendedGuess = wordleSolver.calcSuggestedGuess()
         #print("\nSuggested guess:", recomendedGuess )

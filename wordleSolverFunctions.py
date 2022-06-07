@@ -1,5 +1,11 @@
+"""
+Python wordle solver functions
+This program contains the class for handling solving the wordle
+Author : Andrew Ammentorp
+"""
+
 # the frequency of each letter  
-# And materials provided by https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html          
+# Materials provided by https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html          
 letterFreqs = {
     'e' : 56.88,
     'a' : 43.31,
@@ -29,7 +35,7 @@ letterFreqs = {
     'q' : 1
 }
 
-# freq in each position
+# freq of each letter in each position, start, medial, and final
 # http://www.viviancook.uk/SpellStats/LetFreqByWordPosition.html
 posFreqs = {
     'e' : [18803,352993,185535],
@@ -60,12 +66,21 @@ posFreqs = {
     'q' : [2244,2062,13] 
 }
 
+"""
+Class for handling the wordle solver
+"""
 class WordleSolver:
+    """
+    Constructor
+    """
     def __init__(self):
         self.guess_list = []
         self.pastGuesses = []
         self.guesses = 0
         
+    """
+    Loads up the word pool
+    """
     def initGuessList(self):
         try:
             with open('validWordleWords.txt') as f:
@@ -77,19 +92,28 @@ class WordleSolver:
         except FileNotFoundError:
             print("file not found")
             exit(1)
+    """
+    Gets a copy of the guess list
+    """
     def getGuessList(self):
         return self.guess_list.copy()
-        
+    """
+    Removes a word from the word pool
+    """
     def removeWord(self,word):
         self.guess_list.remove(word)
-        
-    def processFeedback(self,guess,feedback,correctWord):
+    
+    """
+    Process feedback based on guess and feedback
+    (aka updates the word pool
+    """
+    def processFeedback(self,guess,feedback):
         self.pastGuesses.append(guess)
         if feedback == "ggggg":
             try:
                 with open('log.csv',"a") as f:
-                    print(str(self.pastGuesses) + "," + str(self.guesses+1))
-                    f.write(correctWord + "," + str(self.guesses+1) +"\n")
+                    print("Congrats it took " + str(self.guesses+1) + " guesses to guess " + guess + "\n" + str(self.pastGuesses))
+                    f.write(guess + "," + str(self.guesses+1) + "," + str(self.pastGuesses) + "\n")
                     exit(0)
             except FileNotFoundError:
                 print("file not found")
@@ -150,7 +174,10 @@ class WordleSolver:
             if char != 'g' and char != 'y' and char != 'w':
                 return False
         return True
-
+    
+    """
+    Gets a letter's position frequency
+    """
     def getPositionFreq(self,char,posInWord):
         # get letter
         # using dict pass in index
@@ -183,6 +210,12 @@ class WordleSolver:
                 if not char in lettersInWord:
                     guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord))
                     lettersInWord.append(char)
+                else:
+                    # TODO give some points for being a repeat letter (like if its an e or something I guess)
+                    if char == 'e' or char == 'a' or char == 't' or char == 's' or char == 'r':
+                        guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord) / 4)
+                    else:
+                        guessScore += 0
                     
                 index += 1
                 if index == 0:
@@ -197,47 +230,10 @@ class WordleSolver:
                 suggestedGuess = guess
         
         return suggestedGuess
-
-    def calcSecondGuess(self,recomendedGuess):
-        if not self.validateGuess(recomendedGuess):
-            print("Invalid recomended guess")
-            exit(1)
-        
-        # empty word pool
-        if len(self.guess_list) <= 0:
-            return "N/A - error"
-        
-        # get max score based on word freqs
-        maxGuessScore = 0
-        suggestedGuess = ""
-        
-        # for each guess
-        for guess in self.guess_list:
-            guessScore = 0
-            
-            lettersInWord = []
-            index = 0
-            posInWord = 0 # 0 for start , 1 for medial, 2 for final
-            # get its freq score
-            for char in guess:
-                if not char in lettersInWord:
-                    guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord))
-                    lettersInWord.append(char)
-                
-                index += 1
-                if index == 0:
-                    posInWord = 0
-                if index >= 1 and index <= 3:
-                    posInWord = 1
-                if index >= 4:
-                    posInWord = 2
-            # TODO what about a tie(?)
-            if guessScore > maxGuessScore and self.calcFeedback(guess,recomendedGuess) == "wwwww":
-                maxGuessScore = guessScore
-                suggestedGuess = guess
-        
-        return suggestedGuess
-
+    
+    """
+    Calculates feedback based on the correct word
+    """
     def calcFeedback(self,guess,correctWord):
         feedback = ""
         
