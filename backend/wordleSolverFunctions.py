@@ -212,7 +212,7 @@ class WordleSolver:
                     lettersInWord.append(char)
                 else:
                     # TODO give some points for being a repeat letter (like if its an e or something I guess)
-                    if char == 'e' or char == 'a' or char == 't' or char == 's' or char == 'r':
+                    if char == 'e' or char == 'a' or char == 't' or char == 's' or char == 'r' or char == 'o':
                         guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord) / 4)
                     else:
                         guessScore += 0
