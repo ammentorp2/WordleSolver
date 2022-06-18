@@ -38,32 +38,32 @@ letterFreqs = {
 # freq of each letter in each position, start, medial, and final
 # http://www.viviancook.uk/SpellStats/LetFreqByWordPosition.html
 posFreqs = {
-    'e' : [18803,352993,185535],
-    'a' : [102785,234203,25611],
-    'r' : [17378,182761,56940],
-    'i' : [58960,243526,9073],
-    'o' : [56031,240950,43176],
-    't' : [134614,172644,94241],
-    'n' : [19132,224666,73871],
-    's' : [67495,110952,108052],
-    'l' : [27756,134806,27020],
-    'c' : [35932,79409,2595],
-    'u' : [11037,110220,9421],
-    'd' : [24843,55316,110313],
-    'p' : [26237,46560,8156],
-    'm' : [34128,56163,18609],
-    'h' : [68651,179095,24134],
-    'g' : [16856,52118,32897],
-    'b' : [38613,22704,823],
-    'f' : [34629,28552,33250],
-    'y' : [14433,18519,51777],
-    'w' : [61851,27850,10593],
-    'k' : [5759,22153,12046],
-    'v' : [5193,35314,221],
-    'x' : [68,6828,713],
-    'z' : [85,2307,80],
-    'j' : [5349,2455,64],
-    'q' : [2244,2062,13] 
+    'e' : [2.12,13.35,19.75],
+    'a' : [11.56,8.85,2.73],
+    'r' : [1.96,6.91,6.06],
+    'i' : [6.63,9.21,0.97],
+    'o' : [6.30,9.11,4.60],
+    't' : [15.14,6.53,10.03],
+    'n' : [2.15,8.49,7.87],
+    's' : [7.59,4.19,11.50],
+    'l' : [3.12,5.10,2.88],
+    'c' : [4.04,3.00,0.28],
+    'u' : [1.24,4.17,1.00],
+    'd' : [2.79,2.09,11.75],
+    'p' : [2.95,1.76,0.87],
+    'm' : [3.84,2.12,1.98],
+    'h' : [7.72,6.77,2.57],
+    'g' : [1.90,1.97,3.50],
+    'b' : [4.34,0.86,0.09],
+    'f' : [3.90,1.08,3.54],
+    'y' : [1.62,0.70,5.51],
+    'w' : [6.96,1.05,1.13],
+    'k' : [0.65,0.84,1.28],
+    'v' : [0.58,1.34,0.02],
+    'x' : [0.01,0.26,0.08],
+    'z' : [0.01,0.09,0.01],
+    'j' : [0.60,0.09,0.01],
+    'q' : [0.25,0.08,0.01] 
 }
 
 """
@@ -193,6 +193,10 @@ class WordleSolver:
         # empty word pool
         if len(self.guess_list) <= 0:
             return "N/A - error"
+            
+        # if len is 1 just return that word - no need to calculate stuff
+        if len(self.guess_list) == 1:
+            return self.guess_list[0]
         
         # get max score based on word freqs
         maxGuessScore = 0
@@ -203,17 +207,19 @@ class WordleSolver:
             guessScore = 0
             
             lettersInWord = []
+            lettersInGuess = []
             index = 0
             posInWord = 0 # 0 for start , 1 for medial, 2 for final
             # get its freq score
             for char in guess:
-                if not char in lettersInWord:
+                if not char in lettersInWord and not char in lettersInGuess:
                     guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord))
                     lettersInWord.append(char)
+                    lettersInGuess.append(char)
                 else:
                     # TODO give some points for being a repeat letter (like if its an e or something I guess)
-                    if char == 'e' or char == 'a' or char == 't' or char == 's' or char == 'r' or char == 'o':
-                        guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord) / 4)
+                    if char == 'e' or char == 'a' or char == 't' or char == 's' or char == 'o':
+                        guessScore = guessScore + (letterFreqs[char] * self.getPositionFreq(char,posInWord) / 5)
                     else:
                         guessScore += 0
                     
@@ -224,6 +230,7 @@ class WordleSolver:
                     posInWord = 1
                 if index >= 4:
                     posInWord = 2
+            
             # TODO what about a tie(?)
             if guessScore > maxGuessScore:
                 maxGuessScore = guessScore
