@@ -1,13 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
-import { Button, Grid, MenuItem, Select, TextField, Typography } from "@mui/material"
+import { Button, Grid, Box, TextField, Typography } from "@mui/material"
 import { initSolver } from '../API/solverAPI';
 
 export const WordleSolver = () => {
     const [mounted,setMounted] = useState(false);
     const [guesses,setGuesses] = useState(0);
     const [guess,setGuess] = useState("");
-    const [feedback,setFeedback] = useState("");
+    const [feedback,setFeedback] = useState("wwwww");
     
     const [availableWords,setAvailableWords] = useState([]);
     const [recommendedGuess,setRecommendedGuess] = useState("");
@@ -70,10 +70,23 @@ export const WordleSolver = () => {
                     Guess Number : {guesses + 1}
                 </Grid>
                 <Grid item>
-                    Guess: <TextField onChange={e => {setGuess(e.target.value)}}>{guess}</TextField>
+                    Guess: <TextField inputProps={{ maxLength: 5 }} required onChange={e => {setGuess(e.target.value)}}>{guess}</TextField>
                 </Grid>
                 <Grid item>
-                    Feedback: <TextField onChange={e => {setFeedback(e.target.value)}}>{feedback}</TextField>
+                    Feedback: 
+                    {
+                        guess.split("").map(l => (
+                            <Box sx={{
+                                border : 1, 
+                                width : 'auto',
+                                p : 1}}
+                                component="span">
+                                
+                                {l}
+                             
+                            </Box>
+                        ))
+                    }
                 </Grid>
                 <Grid item>
                     <Button onClick={handleSubmitGuess}>
