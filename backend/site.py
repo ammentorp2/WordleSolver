@@ -1,16 +1,24 @@
 from flask import Flask
+from flask_cors import CORS
 from wordleSolverFunctions import *
 
 app = Flask(__name__)
-wordleSolver = WordleSolver() 
+wordleSolver = WordleSolver()
+CORS(app)
 
-@app.route('/profile')
-def my_profile():
+@app.route('/initSolver',methods=['GET'])
+def initSolver():
+    # recreate obj just in case
+    wordleSolver = WordleSolver()
+    
+    wordleSolver.initGuessList()
+    recommendedGuess = wordleSolver.calcSuggestedGuess()
+    
     response_body = {
-        "name": "Nagato",
-        "about" :"Hello! I'm a full stack developer that loves python and javascript"
+        "wordList" : wordleSolver.getGuessList(),
+        "recommendedGuess" : recommendedGuess
     }
-
+    
     return response_body
 
 if __name__ == '__main__':

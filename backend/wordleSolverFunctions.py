@@ -87,7 +87,7 @@ class WordleSolver:
                 for line in f:
                     theWord = line.strip().lower()
                     # only add if word is only letters and length of 5
-                    if self.validateGuess(theWord):
+                    if self.validateGuess(theWord) and not theWord in self.guess_list:
                         self.guess_list.append(theWord)
         except FileNotFoundError:
             print("file not found")

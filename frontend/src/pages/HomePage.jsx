@@ -1,9 +1,13 @@
 import React from 'react';
-import { useState } from 'react';
 import { Button, Grid, MenuItem, Select, TextField } from "@mui/material"
+import { useNavigate } from "react-router-dom";
 
 export const HomePage = () => {
-    const [mounted,setMounted] = useState(false);
+    let navigate = useNavigate();
+
+    const handleGoToSolve = () => {
+        navigate('solve')
+    }
 
     return (
         <div>
@@ -12,7 +16,7 @@ export const HomePage = () => {
                     The Girth
                 </Grid>
                 <Grid item>
-                    <Button>
+                    <Button onClick={handleGoToSolve}>
                         Wordle Solver
                     </Button>
                 </Grid>
