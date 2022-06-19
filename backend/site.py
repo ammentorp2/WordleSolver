@@ -1,6 +1,8 @@
 from flask import Flask
+from wordleSolverFunctions import *
 
 app = Flask(__name__)
+wordleSolver = WordleSolver() 
 
 @app.route('/profile')
 def my_profile():
