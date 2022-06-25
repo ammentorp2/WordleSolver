@@ -9,6 +9,10 @@ export const HomePage = () => {
         navigate('solve')
     }
 
+    const handleGoToTest = () => {
+        navigate('test')
+    }
+
     return (
         <div>
             <Grid>
@@ -21,7 +25,7 @@ export const HomePage = () => {
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button>
+                    <Button onClick={handleGoToTest}>
                         Tester
                     </Button>
                 </Grid>
