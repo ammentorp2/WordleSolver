@@ -15,3 +15,11 @@ export async function processFeedback(guess,feedback){
         return null;
     }
 }
+
+export async function solveForWord(correctWord){
+    try{
+        return await axios.get("solveForWord/" + correctWord);
+    }catch(e){
+        return null;
+    }
+}

@@ -19,9 +19,7 @@ def initSolver():
     return response_body
 
 @app.route('/processFeedback/<guess>/<feedback>',methods=['GET'])
-def processFeedback(guess,feedback):
-    # recreate obj just in case
-    
+def processFeedback(guess,feedback): 
     code = siteManager.processFeedback(guess,feedback)
     response_body = {
         "status" : code,
@@ -31,7 +29,12 @@ def processFeedback(guess,feedback):
     
     return response_body
     
+
+@app.route('/solveForWord/<correctWord>',methods=['GET'])
+def solveForWord(correctWord):
+    response_body = siteManager.solveForWord(correctWord)
     
+    return response_body
 
 if __name__ == '__main__':
     #siteManager.start()
