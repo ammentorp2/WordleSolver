@@ -36,7 +36,7 @@ export const WordleSolver = () => {
     }
 
     const handleSubmitGuess = () => {
-        //make api request to validate word and feedback and then process feedback
+        //make api request to validate word (if in dict) and then process feedback
         console.log(guess,feedback,recommendedGuess);
 
         //hide before making request
@@ -46,6 +46,8 @@ export const WordleSolver = () => {
 
 
         setGuesses(guesses + 1)
+        setGuess('')
+        setFeedback("wwwww")
     }
 
     const handleShowHideWords = () => {
@@ -56,11 +58,62 @@ export const WordleSolver = () => {
         setShowRecommendedGuess(!showRecommendedGuess)
     }
 
+    const calcFeedbackColor = (index) => {
+        switch(feedback[index]){
+            case 'w' : return 'black';
+            case 'g' : return 'green';
+            case 'y' : return 'yellow';
+            default: return 'black';
+        }
+    }
+
+    function updateFeedback(index) {
+        let newFeedback = "";
+
+        for(let i = 0; i < feedback.length; i++){
+            if(i === index){
+                switch(feedback[index]){
+                    case 'w': newFeedback += 'y'; break;
+                    case 'g': newFeedback += 'w'; break;
+                    case 'y' : newFeedback += 'g'; break;
+                    default : newFeedback += 'w';
+                }
+            }
+            else{
+                newFeedback += feedback[i];
+            }
+        }
+
+        setFeedback(newFeedback);
+    }
+
+    const renderFeedback = () => {
+        let output = [];
+        for(let i = 0; i < guess.length; i++){
+            output.push(
+            <Box sx={{ 
+                width : 'auto',
+                p : 1,}}
+                component="span"
+                id={i}
+                >
+                <Button id={i} variant="outlined" sx={{color:'gray',backgroundColor:calcFeedbackColor(i)}}
+                    onClick={() => updateFeedback(i)}>
+                    {guess[i]}
+                </Button>
+                
+            </Box>
+            );
+        }
+
+        return output;
+    }
+
     return(
         <div>
         {mounted ?  
             <div>
-            <Grid>
+            <Grid container direction={'column'} spacing={5}>
                 <Grid item>
                     <header>
                         Wordle Solver
@@ -75,17 +128,7 @@ export const WordleSolver = () => {
                 <Grid item>
                     Feedback: 
                     {
-                        guess.split("").map(l => (
-                            <Box sx={{
-                                border : 1, 
-                                width : 'auto',
-                                p : 1}}
-                                component="span">
-                                
-                                {l}
-                             
-                            </Box>
-                        ))
+                        renderFeedback()
                     }
                 </Grid>
                 <Grid item>
