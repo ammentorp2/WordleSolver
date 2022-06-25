@@ -1,19 +1,24 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button, Grid, Box, TextField, Typography } from "@mui/material"
-import { initSolver } from '../API/solverAPI';
+import { initSolver, processFeedback } from '../API/solverAPI';
 
 export const WordleSolver = () => {
     const [mounted,setMounted] = useState(false);
     const [guesses,setGuesses] = useState(0);
     const [guess,setGuess] = useState("");
     const [feedback,setFeedback] = useState("wwwww");
+
+    const [pastGuesses,setPastGuesses] = useState([]);
+    const [pastFeedbacks,setPastFeedbacks] = useState([]);
     
     const [availableWords,setAvailableWords] = useState([]);
     const [recommendedGuess,setRecommendedGuess] = useState("");
 
     const [showWordList,setShowWordList] = useState(false);
     const [showRecommendedGuess,setShowRecommendedGuess] = useState(false);
+
+    const [solved,setSolved] = useState(false);
 
     if(!mounted){
         //init backend wordlist
@@ -24,6 +29,7 @@ export const WordleSolver = () => {
                     setAvailableWords(response.data.wordList);
                     setRecommendedGuess(response.data.recommendedGuess)
                     setMounted(true);
+                    setSolved(false);
                 }
                 else{
                     console.log("Error initializing solver")
@@ -37,17 +43,63 @@ export const WordleSolver = () => {
 
     const handleSubmitGuess = () => {
         //make api request to validate word (if in dict) and then process feedback
-        console.log(guess,feedback,recommendedGuess);
+        //console.log(guess,feedback,recommendedGuess);
+
+        if(guess.length < 5){
+            alert("Guess needs to be 5 characters!")
+            return;
+        }
+
+
+        let newGuesses = [...pastGuesses];
+        let newFeedbacks = [...pastFeedbacks];
+
+        newGuesses.push(guess);
+        newFeedbacks.push(feedback);
+
+        setPastGuesses(newGuesses);
+        setPastFeedbacks(newFeedbacks);
 
         //hide before making request
         setShowRecommendedGuess(false);
         setShowWordList(false);
 
 
+        try{
+            processFeedback(guess,feedback).then((response) => {
+                if(response !== null && response.status === 200){
+                    if(response.data.status === 2){
+                        //TODO tell user word not in dict
+                        alert("Word not in dictionary. Try again")
+                        setGuess('')
+                        setFeedback("wwwww")
+                        setPastGuesses(pastGuesses.splice(-1))
+                        setPastFeedbacks(pastFeedbacks.splice(-1))
+                    }
+                    else if(response.data.status === 0){
+                        //congrats
+                        //TODO render congrats page or graphic thing
+                        setSolved(true);
+                    }
+                    else if(response.data.status === 1){
+                        setAvailableWords(response.data.wordList);
+                        setRecommendedGuess(response.data.recommendedGuess)
+                        setGuesses(guesses + 1)
+                        setGuess('')
+                        setFeedback("wwwww")
+                    }
 
-        setGuesses(guesses + 1)
-        setGuess('')
-        setFeedback("wwwww")
+                    
+                }
+                else{
+                    console.log("Error with response")
+                }
+            })
+        } catch(e){
+            console.log("Error with response")
+        }
+
+        
     }
 
     const handleShowHideWords = () => {
@@ -60,6 +112,15 @@ export const WordleSolver = () => {
 
     const calcFeedbackColor = (index) => {
         switch(feedback[index]){
+            case 'w' : return 'black';
+            case 'g' : return 'green';
+            case 'y' : return 'yellow';
+            default: return 'black';
+        }
+    }
+
+    const calcPastFeedbackColor = (wordIndex,letterIndex) => {
+        switch(pastFeedbacks[wordIndex][letterIndex]){
             case 'w' : return 'black';
             case 'g' : return 'green';
             case 'y' : return 'yellow';
@@ -109,9 +170,41 @@ export const WordleSolver = () => {
         return output;
     }
 
+    const renderPastFeedbacks = () => {
+        let output = [];
+        for(let i = 0; i < pastGuesses.length; i++){
+            for(let j = 0; j < pastGuesses[i].length; j++){
+
+                output.push(
+                    <Box sx={{ 
+                        width : 'auto',
+                        p : 1,}}
+                        component="span"
+                        id={j}
+                        >
+                        <Button id={j} variant="outlined" sx={{color:'gray',backgroundColor:calcPastFeedbackColor(i,j)}}
+                        >
+                            {pastGuesses[i][j]}
+                        </Button>
+                        
+                    </Box>
+                    );
+            }
+            output.push(<div></div>)
+            
+        }
+
+        return output;
+    }
+
     return(
         <div>
-        {mounted ?  
+        {mounted ?
+            solved ?
+                <div>
+                    Congrats!
+                </div>
+            :
             <div>
             <Grid container direction={'column'} spacing={5}>
                 <Grid item>
@@ -126,14 +219,22 @@ export const WordleSolver = () => {
                     Guess: <TextField inputProps={{ maxLength: 5 }} required onChange={e => {setGuess(e.target.value)}}>{guess}</TextField>
                 </Grid>
                 <Grid item>
-                    Feedback: 
-                    {
-                        renderFeedback()
-                    }
+                    Feedback (from Wordle): 
+                    <Grid container direction={'colummn'} spacing={2}>
+                        <Grid item>
+                        {
+                            renderPastFeedbacks()
+                        }
+                        {
+                            renderFeedback()
+                        }
+                        </Grid>
+                    </Grid>
+
                 </Grid>
                 <Grid item>
-                    <Button onClick={handleSubmitGuess}>
-                        Submit
+                    <Button variant="outlined" onClick={handleSubmitGuess}>
+                        Submit Guess
                     </Button>
                 </Grid>
                 <Grid item>

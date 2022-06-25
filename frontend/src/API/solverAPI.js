@@ -7,3 +7,11 @@ export async function initSolver(){
         return null;
     }
 }
+
+export async function processFeedback(guess,feedback){
+    try{
+        return await axios.get("processFeedback/" + guess + "/" + feedback);
+    }catch(e){
+        return null;
+    }
+}

@@ -54,7 +54,10 @@ if __name__ == '__main__':
         # calc the feedback
         feedback = wordleSolver.calcFeedback(guess,correctWord)   
         
-        wordleSolver.processFeedback(guess,feedback)
+        code = wordleSolver.processFeedback(guess,feedback)
+        
+        if code == 0:
+            exit(0)
              
         recomendedGuess = wordleSolver.calcSuggestedGuess()
         #print("\nSuggested guess:", recomendedGuess )

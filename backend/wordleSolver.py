@@ -43,7 +43,10 @@ if __name__ == '__main__':
             validFeedback = wordleSolver.validateFeedback(feedback)
             
         
-        wordleSolver.processFeedback(guess,feedback)
+        code = wordleSolver.processFeedback(guess,feedback)
+
+        if code == 0:
+            exit(0)
 
         counter = 0
         print("Available words to guess:")

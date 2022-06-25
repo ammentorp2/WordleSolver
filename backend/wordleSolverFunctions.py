@@ -108,18 +108,23 @@ class WordleSolver:
     (aka updates the word pool
     """
     def processFeedback(self,guess,feedback):
+        
+        if not guess in self.guess_list:
+            print( "error: word not in guess list. try again")
+            return 2
+        
         self.pastGuesses.append(guess)
         if feedback == "ggggg":
             try:
                 with open('log.csv',"a") as f:
                     print("Congrats it took " + str(self.guesses+1) + " guesses to guess " + guess + "\n" + str(self.pastGuesses))
                     f.write(guess + "," + str(self.guesses+1) + "," + str(self.pastGuesses) + "\n")
-                    exit(0)
+                    return 0
             except FileNotFoundError:
                 print("file not found")
                 exit(1)
             
-        else:    
+        else: 
             self.guesses += 1
             
             temp_tuple = tuple(self.guess_list)
@@ -147,6 +152,8 @@ class WordleSolver:
                     elif feedback[i] == "y" and guess[i] == word[i]:
                         self.removeWord(word)
                         break
+                        
+            return 1
     """
     This function takes a guess and makes sure it's valid
     @param guess the user's guess
