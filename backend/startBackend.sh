@@ -1,3 +1,3 @@
 #!/bin/bash
 # runs the backend
-python site.py
+python wsgi.py

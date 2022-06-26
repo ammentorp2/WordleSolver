@@ -83,14 +83,14 @@ class WordleSolver:
     """
     def initGuessList(self):
         try:
-            with open('validWordleWords.txt') as f:
+            with open('resources/validWordleWords.txt') as f:
                 for line in f:
                     theWord = line.strip().lower()
                     # only add if word is only letters and length of 5
                     if self.validateGuess(theWord) and not theWord in self.guess_list:
                         self.guess_list.append(theWord)
         except FileNotFoundError:
-            print("file not found")
+            print("file not found - validWordleWords.txt")
             exit(1)
     """
     Gets a copy of the guess list
@@ -116,12 +116,12 @@ class WordleSolver:
         self.pastGuesses.append(guess)
         if feedback == "ggggg":
             try:
-                with open('log.csv',"a") as f:
+                with open('resources/log.csv',"a") as f:
                     print("Congrats it took " + str(self.guesses+1) + " guesses to guess " + guess + "\n" + str(self.pastGuesses))
                     f.write(guess + "," + str(self.guesses+1) + "," + str(self.pastGuesses) + "\n")
                     return 0
             except FileNotFoundError:
-                print("file not found")
+                print("Couldn't open file - log.csv")
                 exit(1)
             
         else: 

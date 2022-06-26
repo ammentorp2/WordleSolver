@@ -3,14 +3,13 @@
 """
 
 from flask import Flask
-from flask_cors import CORS
-from wordleSolverFunctions import *
-import siteManager as siteManager
+from . import wordleSolverFunctions
+#from wordleSolverFunctions import *
+from . import siteManager as siteManager
+#import siteManager as siteManager
+
 
 app = Flask(__name__)
-
-# Cross origin reference crap
-CORS(app)
 
 """
     Initilizes wordle solver word list
@@ -49,7 +48,7 @@ def solveForWord(correctWord):
     response_body = siteManager.solveForWord(correctWord)
     
     return response_body
-
-if __name__ == '__main__':
-    #siteManager.start()
-    app.run(debug=True)
+    
+@app.route('/',methods=['GET'])    
+def home():
+    return "<h1>Welcome to the Ammentorp wordle solver endpoints. For documentation click here<h1>"

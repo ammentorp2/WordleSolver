@@ -16,11 +16,12 @@ export const WordleSolverTester = () => {
         //get recomended guess
         try{
             initSolver().then((response) => {
+                console.log(response)
                 if(response !== null && response.status === 200){
                     setMounted(true);
                 }
                 else{
-                    console.log("Error initializing solver")
+                    console.log("Error initializing solver - bad response")
                 }
             });
         } catch(e){

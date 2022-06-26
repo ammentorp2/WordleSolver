@@ -2,8 +2,9 @@
     This file takes care of our wordleSolver object
 """
 
-from wordleSolverFunctions import *
-wordleSolver = WordleSolver()
+#from wordleSolverFunctions import *
+from . import wordleSolverFunctions as w
+wordleSolver = w.WordleSolver()
    
 # Initilize the wordlist   
 def initWordList():
