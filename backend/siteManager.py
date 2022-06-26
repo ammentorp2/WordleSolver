@@ -1,18 +1,27 @@
+"""
+    This file takes care of our wordleSolver object
+"""
+
 from wordleSolverFunctions import *
 wordleSolver = WordleSolver()
-    
+   
+# Initilize the wordlist   
 def initWordList():
     wordleSolver.initGuessList()
-    
+
+# Gets the word list    
 def getWordList():
     return wordleSolver.getGuessList()
-    
+
+# Gets the suggested guess    
 def getRecommendedGuess():
     return wordleSolver.calcSuggestedGuess()
-    
+
+# Processes feedback    
 def processFeedback(guess,feedback):
     return wordleSolver.processFeedback(guess,feedback)
-    
+
+# Solves for a word (basically this is wordleSolverTester.py)    
 def solveForWord(correctWord):
     response_body = {
         "status" : 0,
