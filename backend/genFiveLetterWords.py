@@ -1,4 +1,10 @@
 """
+    This file takes all words from the linux dictionary, and
+    emits all 5 letter words to a valid wordle words file
+"""
+
+
+"""
     This function takes a guess and makes sure it's valid
     @param guess the user's guess
     @returns Boolean if guess is valid
