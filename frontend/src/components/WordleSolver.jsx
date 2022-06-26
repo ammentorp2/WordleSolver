@@ -3,10 +3,15 @@ import { useState } from 'react';
 import { Button, Grid, Box, TextField, Typography } from "@mui/material"
 import { initSolver, processFeedback } from '../API/solverAPI';
 
+// user wordle solver
 export const WordleSolver = () => {
+    // to init some things
     const [mounted,setMounted] = useState(false);
+    // number of guesses used
     const [guesses,setGuesses] = useState(0);
+    // current guess
     const [guess,setGuess] = useState("");
+    // feedback on guess
     const [feedback,setFeedback] = useState("wwwww");
 
     const [pastGuesses,setPastGuesses] = useState([]);
@@ -57,6 +62,7 @@ export const WordleSolver = () => {
         newGuesses.push(guess);
         newFeedbacks.push(feedback);
 
+        // add to past guesses and feedbacks
         setPastGuesses(newGuesses);
         setPastFeedbacks(newFeedbacks);
 
@@ -68,19 +74,21 @@ export const WordleSolver = () => {
         try{
             processFeedback(guess,feedback).then((response) => {
                 if(response !== null && response.status === 200){
+                    // word not in dict
                     if(response.data.status === 2){
-                        //TODO tell user word not in dict
                         alert("Word not in dictionary. Try again")
                         setGuess('')
                         setFeedback("wwwww")
                         setPastGuesses(pastGuesses.splice(-1))
                         setPastFeedbacks(pastFeedbacks.splice(-1))
                     }
+                    // solved
                     else if(response.data.status === 0){
                         //congrats
                         //TODO render congrats page or graphic thing
                         setSolved(true);
                     }
+                    // valid word, but not correct
                     else if(response.data.status === 1){
                         setAvailableWords(response.data.wordList);
                         setRecommendedGuess(response.data.recommendedGuess)
@@ -110,6 +118,7 @@ export const WordleSolver = () => {
         setShowRecommendedGuess(!showRecommendedGuess)
     }
 
+    //determine color of text
     const calcFeedbackColor = (index) => {
         switch(feedback[index]){
             case 'w' : return 'black';
@@ -119,6 +128,7 @@ export const WordleSolver = () => {
         }
     }
 
+    //determine color of text
     const calcPastFeedbackColor = (wordIndex,letterIndex) => {
         switch(pastFeedbacks[wordIndex][letterIndex]){
             case 'w' : return 'black';
@@ -128,6 +138,7 @@ export const WordleSolver = () => {
         }
     }
 
+    // changes feedback
     function updateFeedback(index) {
         let newFeedback = "";
 

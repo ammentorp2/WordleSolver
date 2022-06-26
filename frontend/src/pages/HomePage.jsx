@@ -20,12 +20,12 @@ export const HomePage = () => {
                     The Girth
                 </Grid>
                 <Grid item>
-                    <Button onClick={handleGoToSolve}>
+                    <Button variant="outlined" onClick={handleGoToSolve}>
                         Wordle Solver
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button onClick={handleGoToTest}>
+                    <Button variant="outlined" onClick={handleGoToTest}>
                         Tester
                     </Button>
                 </Grid>
