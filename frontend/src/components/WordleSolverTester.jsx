@@ -16,7 +16,7 @@ export const WordleSolverTester = () => {
         //get recomended guess
         try{
             initSolver().then((response) => {
-                console.log(response)
+                //console.log(response)
                 if(response !== null && response.status === 200){
                     setMounted(true);
                 }

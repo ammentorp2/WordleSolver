@@ -31,7 +31,7 @@ export const HomePage = () => {
                 </Grid>
                 <Grid item>
                     <Button variant="contained" onClick={handleGoToTest}>
-                        Solve for a word
+                        Auto-Solve for a word
                     </Button>
                 </Grid>
             </Grid>

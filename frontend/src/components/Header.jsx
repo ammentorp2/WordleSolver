@@ -18,7 +18,10 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import BoltIcon from '@mui/icons-material/Bolt';
+import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
+
+// gotten from https://mui.com/material-ui/react-drawer/#persistent-drawer
 
 const drawerWidth = 240;
 
@@ -94,7 +97,7 @@ export const Header = () => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" onClick={() => navigate('/')}>
             Ammentorp Wordle Solver
           </Typography>
         </Toolbar>
@@ -119,12 +122,20 @@ export const Header = () => {
         </DrawerHeader>
         <Divider />
         <List>
+            <ListItem key={'Home'} disablePadding onClick={() => navigate('/')}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <HomeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={'Home'} />
+                </ListItemButton>
+            </ListItem>
             <ListItem key={'Guided Solve'} disablePadding onClick={() => navigate('/solve')}>
             <ListItemButton>
                 <ListItemIcon>
                     <BoltIcon />
                 </ListItemIcon>
-                <ListItemText primary={'Guided Solve'} />
+                <ListItemText primary={'Wordle Solver'} />
               </ListItemButton>
             </ListItem>
 
@@ -133,7 +144,7 @@ export const Header = () => {
                 <ListItemIcon>
                     <AutoAwesomeIcon />
                 </ListItemIcon>
-                <ListItemText primary={'Auto Solve for Word'} />
+                <ListItemText primary={'Auto-Solve Word'} />
               </ListItemButton>
             </ListItem>
         </List>
