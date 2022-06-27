@@ -90,6 +90,7 @@ export const WordleSolverTester = () => {
                 output.push(<div></div>)
                 
             }
+            output.push(<Typography>Solved in {pastGuesses.length} guesses</Typography>)
         }
     
         return output;
@@ -108,18 +109,16 @@ export const WordleSolverTester = () => {
             {mounted ? 
                 <Grid container direction={'column'} spacing={5}>
                     <Grid item>
-                        <header>
-                            Wordle Solver
-                        </header>
-                    </Grid>
-                    <Grid item>
-                        Word to solve for: <TextField inputProps={{ maxLength: 5 }} required 
+                        <Typography>
+                            Word to solve for:
+                        </Typography> 
+                        <TextField inputProps={{ maxLength: 5 }} required 
                                                 onChange={e => {setTargetWord(e.target.value)}} disabled={wordSubmitted}>
-                                                    {targetWord}
-                                            </TextField>
+                            {targetWord}
+                        </TextField>
                     </Grid>
                     <Grid item>
-                        <Button variant="outlined" onClick={handleSolveWord} disabled={wordSubmitted}>
+                        <Button variant="contained" color="success" onClick={handleSolveWord} disabled={wordSubmitted}>
                             Solve for word
                         </Button>
                     </Grid>
@@ -129,7 +128,7 @@ export const WordleSolverTester = () => {
                         }
                     </Grid>
                     <Grid item >
-                        <Button variant="outlined" onClick={handleSolveAgain} disabled={!wordSubmitted}>
+                        <Button variant="contained" onClick={handleSolveAgain} disabled={!wordSubmitted}>
                             Solve for another word
                         </Button>
                     </Grid>

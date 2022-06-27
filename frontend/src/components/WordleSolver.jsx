@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import { Button, Grid, Box, TextField, Typography } from "@mui/material"
+import { Button, Grid, Box, TextField, Typography,Tooltip ,IconButton  } from "@mui/material"
+import HelpIcon  from '@mui/icons-material/Help';
 import { initSolver, processFeedback } from '../API/solverAPI';
 
 // user wordle solver
@@ -10,7 +11,7 @@ export const WordleSolver = () => {
     // number of guesses used
     const [guesses,setGuesses] = useState(0);
     // current guess
-    const [guess,setGuess] = useState("");
+    const [guess,setGuess] = useState("guess");
     // feedback on guess
     const [feedback,setFeedback] = useState("wwwww");
 
@@ -72,12 +73,12 @@ export const WordleSolver = () => {
 
 
         try{
-            processFeedback(guess,feedback).then((response) => {
+            processFeedback(guess.toLowerCase(),feedback).then((response) => {
                 if(response !== null && response.status === 200){
                     // word not in dict
                     if(response.data.status === 2){
                         alert("Word not in dictionary. Try again")
-                        setGuess('')
+                        setGuess('guess')
                         setFeedback("wwwww")
                         setPastGuesses(pastGuesses.splice(-1))
                         setPastFeedbacks(pastFeedbacks.splice(-1))
@@ -219,18 +220,21 @@ export const WordleSolver = () => {
             <div>
             <Grid container direction={'column'} spacing={5}>
                 <Grid item>
-                    <header>
-                        Wordle Solver
-                    </header>
+                    <Typography>Guess Number : {guesses + 1}</Typography>
                 </Grid>
                 <Grid item>
-                    Guess Number : {guesses + 1}
+                    <Typography>Guess:</Typography> 
+                    <TextField inputProps={{ maxLength: 5 }} required onChange={e => {setGuess(e.target.value)}} placeholder="guess">
+                        {guess}
+                    </TextField>
                 </Grid>
                 <Grid item>
-                    Guess: <TextField inputProps={{ maxLength: 5 }} required onChange={e => {setGuess(e.target.value)}}>{guess}</TextField>
-                </Grid>
-                <Grid item>
-                    Feedback (from Wordle): 
+                    Feedback on word (from Wordle): 
+                    <Tooltip title="Click on a letter to cycle between the feedbacks from Wordle: black, yellow, and green">
+                        <IconButton>
+                            <HelpIcon />
+                        </IconButton>
+                    </Tooltip>
                     <Grid container direction={'colummn'} spacing={2}>
                         <Grid item>
                         {
@@ -244,12 +248,7 @@ export const WordleSolver = () => {
 
                 </Grid>
                 <Grid item>
-                    <Button variant="outlined" onClick={handleSubmitGuess}>
-                        Submit Guess
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button onClick={handleShowHideRecommendedGuess}>
+                    <Button variant="contained" onClick={handleShowHideRecommendedGuess}>
                         Show/Hide Suggested Guess
                     </Button>
                     {
@@ -260,7 +259,7 @@ export const WordleSolver = () => {
                     }
                 </Grid>
                 <Grid item>
-                    <Button onClick={handleShowHideWords}>
+                    <Button variant="contained" onClick={handleShowHideWords}>
                         Show/Hide Available Words
                     </Button>
                     {
@@ -271,6 +270,11 @@ export const WordleSolver = () => {
                         :
                         null
                     }
+                </Grid>
+                <Grid item>
+                    <Button variant="contained" color="success" onClick={handleSubmitGuess}>
+                        Submit Guess
+                    </Button>
                 </Grid>
             </Grid>
         </div>

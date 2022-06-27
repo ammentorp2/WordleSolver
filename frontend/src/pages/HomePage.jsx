@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Grid, MenuItem, Select, TextField } from "@mui/material"
+import { Button, Grid, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { useNavigate } from "react-router-dom";
+import { Header } from '../components/Header';
 
 export const HomePage = () => {
     let navigate = useNavigate();
@@ -15,23 +16,22 @@ export const HomePage = () => {
 
     return (
         <div>
-            <Grid>
-                <Grid item textAlign={true}>
-                    The Girth
+            <Header />
+            <Grid container justifyContent="center" direction={'column'} spacing={5}>
+                <Grid item>
+                    <Typography paragraph variant="body1">
+                        Welcome to the Ammentorp Wordle Solver! Wordle is an super popular site, so I thought it would be
+                        a fun challenge to create an application to help users as well as automatically attempt to solve it.
+                    </Typography>
                 </Grid>
                 <Grid item>
-                    <Button variant="outlined" onClick={handleGoToSolve}>
-                        Wordle Solver
+                    <Button variant="contained" onClick={handleGoToSolve}>
+                        Access the Wordle Solver
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button variant="outlined" onClick={handleGoToTest}>
-                        Tester
-                    </Button>
-                </Grid>
-                <Grid item>
-                    <Button>
-                        About
+                    <Button variant="contained" onClick={handleGoToTest}>
+                        Solve for a word
                     </Button>
                 </Grid>
             </Grid>
