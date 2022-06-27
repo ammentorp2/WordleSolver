@@ -32,7 +32,7 @@ export const WordleSolver = () => {
         try{
             initSolver().then((response) => {
                 if(response !== null && response.status === 200){
-                    setAvailableWords(response.data.wordList);
+                    setAvailableWords(response.data.wordList.sort());
                     setRecommendedGuess(response.data.recommendedGuess)
                     setMounted(true);
                     setSolved(false);
