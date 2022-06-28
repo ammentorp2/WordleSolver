@@ -38,6 +38,26 @@ export const AboutPage = () => {
                         Thus factoring in the start,middle, and medial positions of each letter <b>Atone</b> is new first suggested guess.
                     </Typography>
                 </Grid>
+                <Grid item>
+                    <Typography variant="h4">
+                        Future tasks
+                    </Typography>
+                    <Typography paragraph>
+                        <ul>
+                            <li>Factor in common two/three letter combinations, such as st,str,pl etc</li>
+                            <li>
+                                The edge case of only one missing letter. For example my auto solver takes 7 guesses to solve for "rakes".
+                                Looking at its past guesses it guesses 4 words before getting the 'k' correct. Finding a different word
+                                to guess that uses multiple unused letters to find which one is in the word seems to be the better
+                                strategy.
+                            </li>
+                            <li>
+                                Update the dictionary. Currently I use the linux dictionary (with a few modifications)
+                                which is not the dictionary the NYT wordle uses. Changing this is a priority. 
+                            </li>
+                        </ul>
+                    </Typography>
+                </Grid>
             </Grid>
             <Collapse>Test</Collapse>
         </div>
