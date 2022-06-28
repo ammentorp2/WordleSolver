@@ -97,6 +97,9 @@ export const Header = () => {
           >
             <MenuIcon />
           </IconButton>
+          <IconButton color="inherit" sx={{ mr: 2, ...(open && { display: 'none' }) }}  onClick={() => navigate('/')}>
+            <HomeIcon />
+          </IconButton>
           <Typography variant="h6" noWrap component="div" onClick={() => navigate('/')}>
             Ammentorp Wordle Solver
           </Typography>
