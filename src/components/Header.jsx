@@ -17,6 +17,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import BoltIcon from '@mui/icons-material/Bolt';
 import HomeIcon from '@mui/icons-material/Home';
 import { useNavigate } from "react-router-dom";
@@ -150,6 +151,16 @@ export const Header = () => {
                 <ListItemText primary={'Auto-Solve Word'} />
               </ListItemButton>
             </ListItem>
+
+            <ListItem key={'About'} disablePadding onClick={() => navigate('/about')}>
+            <ListItemButton>
+                <ListItemIcon>
+                    <LightbulbIcon />
+                </ListItemIcon>
+                <ListItemText primary={'About'} />
+              </ListItemButton>
+            </ListItem>
+
         </List>
         <Divider />
             <List>
