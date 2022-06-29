@@ -32,7 +32,7 @@ export const WordleSolverTester = () => {
 
     const handleSolveWord = () => {
         try{
-            solveForWord(targetWord).then((response) => {
+            solveForWord(targetWord.toLowerCase()).then((response) => {
                 if(response !== null && response.status === 200){
                     if(response.data.status === 1){
                         alert("Word not in dictionary!")

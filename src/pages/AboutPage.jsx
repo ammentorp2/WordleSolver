@@ -51,15 +51,10 @@ export const AboutPage = () => {
                                 to guess that uses multiple unused letters to find which one is in the word seems to be the better
                                 strategy.
                             </li>
-                            <li>
-                                Update the dictionary. Currently I use the linux dictionary (with a few modifications)
-                                which is not the dictionary the NYT wordle uses. Changing this is a priority. 
-                            </li>
                         </ul>
                     </Typography>
                 </Grid>
             </Grid>
-            <Collapse>Test</Collapse>
         </div>
     )
 }
