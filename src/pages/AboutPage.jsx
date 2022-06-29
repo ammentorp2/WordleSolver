@@ -35,7 +35,7 @@ export const AboutPage = () => {
                         (http://www.viviancook.uk/SpellStats/LetFreqByWordPosition.html). For example, using the old 
                         formula <b>Irate</b> was the suggested first guess. While containing common letters, not many words start with 'I' 
                          (relatively speaking).
-                        Thus factoring in the start,middle, and medial positions of each letter <b>Atone</b> is new first suggested guess.
+                        Thus factoring in the start,middle, and medial positions of each letter <b>Trine</b> is new first suggested guess.
                     </Typography>
                 </Grid>
                 <Grid item>
